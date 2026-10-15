@@ -1,27 +1,18 @@
 {
-  "name": "notekeep-studio",
-  "version": "0.1.0",
+  "name": "notekeep-studio-workspace",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
-  },
-  "dependencies": {
-    "canvas-confetti": "^1.9.4",
-    "lucide-react": "^1.16.0",
-    "next": "^15.1.7",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "dev": "concurrently -n \"SERVER,CLIENT\" -c \"cyan,magenta\" \"npm --prefix backend run dev\" \"npm --prefix client run dev\"",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:client": "npm --prefix client run dev",
+    "build:backend": "npm --prefix backend run build",
+    "build:client": "npm --prefix client run build",
+    "build": "npm run build:backend && npm run build:client",
+    "start": "npm --prefix backend start",
+    "prisma:studio": "npm --prefix backend run prisma:studio"
   },
   "devDependencies": {
-    "@types/canvas-confetti": "^1.9.0",
-    "@types/node": "^22.10.7",
-    "@types/react": "^19.0.7",
-    "@types/react-dom": "^19.0.3",
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.17",
-    "typescript": "^5.7.2"
+    "concurrently": "^9.1.2"
   }
 }
