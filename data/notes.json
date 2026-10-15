@@ -1,0 +1,195 @@
+[
+  {
+    "id": "note-1792080763133-txwaw",
+    "title": "Tested",
+    "content": "#Testing witj noyes",
+    "theme": "default",
+    "icon": "📝",
+    "tags": [],
+    "checklist": [],
+    "isPinned": false,
+    "isFavorite": false,
+    "isArchived": false,
+    "isTrashed": false,
+    "createdAt": "2026-10-15T16:12:43.133Z",
+    "updatedAt": "2026-10-15T16:12:43.133Z"
+  },
+  {
+    "id": "note-welcome",
+    "title": "Welcome to NoteKeep Studio 🚀",
+    "content": "## The Best of Google Keep & Notion Combined\n- **Vibrant Card Themes**: Switch between pastel, neon, obsidian, and gradient aesthetics.\n- **Notion-Style Block Formatting**: Headers, task lists, code snippets, and callouts.\n- **Lightning Fast Quick Capture**: Add notes from the top bar with colors and tags.\n- **Flexible Views**: Switch between Grid Masonry, Compact List, and Notion-style Board view.\n\n```typescript\nconst isAmazing = true;\nconsole.log(\"Welcome to your new favorite workspace!\");\n```\n\n> 💡 *Pro tip: Try pressing `Ctrl+K` (or `Cmd+K`) to search anywhere or toggle Dark Mode.*",
+    "theme": "mint",
+    "icon": "🚀",
+    "coverImage": "linear-gradient(135deg, #f6d365 0%, #fda085 100%)",
+    "tags": [
+      "Ideas",
+      "Work"
+    ],
+    "checklist": [
+      {
+        "id": "chk-1",
+        "text": "Explore the 14+ note themes and color palettes",
+        "completed": true
+      },
+      {
+        "id": "chk-2",
+        "text": "Create your first note using the quick bar",
+        "completed": false
+      },
+      {
+        "id": "chk-3",
+        "text": "Toggle dark mode in the sidebar",
+        "completed": false
+      },
+      {
+        "id": "chk-4",
+        "text": "Try switching between Grid, List, and Kanban views",
+        "completed": false
+      }
+    ],
+    "isPinned": true,
+    "isFavorite": true,
+    "isArchived": false,
+    "isTrashed": false,
+    "createdAt": "2026-10-14T16:10:03.395Z",
+    "updatedAt": "2026-10-15T16:10:03.395Z"
+  },
+  {
+    "id": "note-q4-roadmap",
+    "title": "Product Roadmap & Sprint Goals 🎯",
+    "content": "### High Priority Deliverables\nFocusing on developer velocity and user satisfaction for the upcoming release cycle.\n\n#### Key Milestones\n1. Refactor data sync layer to support offline queues\n2. Introduce custom markdown slash command menu\n3. Expand color token customization in user settings",
+    "theme": "peach",
+    "icon": "🎯",
+    "coverImage": "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+    "tags": [
+      "Work",
+      "To-Do"
+    ],
+    "checklist": [
+      {
+        "id": "chk-201",
+        "text": "Finalize API schema and validation rules",
+        "completed": true
+      },
+      {
+        "id": "chk-202",
+        "text": "Complete drag-and-drop board interaction",
+        "completed": true
+      },
+      {
+        "id": "chk-203",
+        "text": "Run accessibility and contrast audit",
+        "completed": false
+      },
+      {
+        "id": "chk-204",
+        "text": "Write release notes and changelog",
+        "completed": false
+      }
+    ],
+    "isPinned": true,
+    "isFavorite": false,
+    "isArchived": false,
+    "isTrashed": false,
+    "createdAt": "2026-10-14T22:10:03.395Z",
+    "updatedAt": "2026-10-15T16:10:03.395Z"
+  },
+  {
+    "id": "note-deep-work",
+    "title": "Deep Work & Morning Rituals ☕",
+    "content": "*\"Clarity about what matters provides clarity about what does not.\"*\n\n### Daily Routine\n- **07:30 AM**: 20-min morning walk + hydration\n- **08:00 AM**: Pour-over coffee + 90-minute distraction-free focus block\n- **11:30 AM**: Team standup & code reviews\n- **04:30 PM**: Wrap-up log & planning next day's top 3 outcomes",
+    "theme": "lavender",
+    "icon": "☕",
+    "tags": [
+      "Personal"
+    ],
+    "checklist": [],
+    "isPinned": false,
+    "isFavorite": true,
+    "isArchived": false,
+    "isTrashed": false,
+    "createdAt": "2026-10-13T16:10:03.395Z",
+    "updatedAt": "2026-10-15T16:13:40.527Z"
+  },
+  {
+    "id": "note-canary-design",
+    "title": "Design System & Color Harmonies 🎨",
+    "content": "### Google Keep Inspiration\nThe magic of Keep is the **instant cognitive grouping** created by soft, harmonious hues. Each color represents a mindset:\n- 🟡 Yellow: Actionable to-dos & urgent thoughts\n- 🟢 Green: Growth, research, reading notes\n- 🟣 Purple: Creative brainstorms & long-term dreams\n- 🔴 Rose / Peach: People, team syncs, meetings",
+    "theme": "canary",
+    "icon": "🎨",
+    "tags": [
+      "Ideas",
+      "Design"
+    ],
+    "checklist": [
+      {
+        "id": "chk-301",
+        "text": "Test contrast ratios for dark mode cards",
+        "completed": true
+      },
+      {
+        "id": "chk-302",
+        "text": "Add subtle colored borders for high visibility",
+        "completed": true
+      },
+      {
+        "id": "chk-303",
+        "text": "Ensure smooth hover transitions on all cards",
+        "completed": true
+      }
+    ],
+    "isPinned": false,
+    "isFavorite": false,
+    "isArchived": false,
+    "isTrashed": false,
+    "createdAt": "2026-10-14T04:10:03.395Z",
+    "updatedAt": "2026-10-15T16:13:03.974Z"
+  },
+  {
+    "id": "note-reading-list",
+    "title": "Winter Reading List 📚",
+    "content": "Essential books on software architecture, design, and thoughtful craft:\n- **Designing Data-Intensive Applications** — Martin Kleppmann\n- **The Design of Everyday Things** — Don Norman\n- **Refactoring UI** — Adam Wathan & Steve Schoger\n- **Thinking in Systems** — Donella Meadows",
+    "theme": "sky",
+    "icon": "📚",
+    "tags": [
+      "Personal"
+    ],
+    "checklist": [
+      {
+        "id": "chk-401",
+        "text": "Finish Chapter 4 of Data-Intensive Apps",
+        "completed": true
+      },
+      {
+        "id": "chk-402",
+        "text": "Take notes on System Archetypes",
+        "completed": false
+      }
+    ],
+    "isPinned": false,
+    "isFavorite": false,
+    "isArchived": false,
+    "isTrashed": false,
+    "createdAt": "2026-10-12T16:10:03.395Z",
+    "updatedAt": "2026-10-15T16:10:03.395Z"
+  },
+  {
+    "id": "note-tech-stack",
+    "title": "Architecture & Tech Stack ⚡",
+    "content": "### Core Foundation\n- **Framework**: Next.js 15 App Router\n- **Type Safety**: TypeScript 5.7\n- **Styling**: Tailwind CSS + Custom Design System Tokens\n- **Icons**: Lucide React\n- **Full-Stack Storage**: Local persistent file database with atomic sync",
+    "theme": "obsidian",
+    "icon": "⚡",
+    "coverImage": "linear-gradient(135deg, #30cfd0 0%, #330867 100%)",
+    "tags": [
+      "Code",
+      "Work"
+    ],
+    "checklist": [],
+    "isPinned": false,
+    "isFavorite": true,
+    "isArchived": false,
+    "isTrashed": false,
+    "createdAt": "2026-10-15T04:10:03.395Z",
+    "updatedAt": "2026-10-15T16:10:03.395Z"
+  }
+]
