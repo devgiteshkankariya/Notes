@@ -10,8 +10,11 @@ import {
   FolderPlus,
   Layers,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  Rocket,
+  X
 } from 'lucide-react';
+import confetti from 'canvas-confetti';
 import { Note, NoteThemeId, Tag, ViewFilter, LayoutMode } from '@/types/note';
 import { Sidebar } from '@/components/Sidebar';
 import { HeaderBar } from '@/components/HeaderBar';
@@ -45,6 +48,7 @@ export default function NotesPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [showDeploymentBanner, setShowDeploymentBanner] = useState(true);
 
   // Initialize Dark Mode & Auth from localStorage
   useEffect(() => {
@@ -397,6 +401,55 @@ export default function NotesPage() {
 
         {/* Content Scroll Container */}
         <main className="flex-1 p-4 sm:p-6 max-w-7xl w-full mx-auto">
+          {/* CI/CD Deployment Live Banner */}
+          {showDeploymentBanner && (
+            <div className="relative mb-6 p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 dark:from-amber-950/20 dark:via-zinc-900/40 dark:to-orange-950/20 border border-amber-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm animate-fade-in overflow-hidden">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-500 text-white flex items-center justify-center shadow-md shadow-amber-500/30 shrink-0">
+                  <Rocket className="w-5 h-5 animate-bounce" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-sm font-bold text-zinc-900 dark:text-white">
+                      Live Deployment via Jenkins CI/CD 🚀
+                    </h3>
+                    <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold uppercase tracking-wider border border-emerald-500/30 flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      AWS EC2 Live
+                    </span>
+                  </div>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                    Automated build verified. Changes from GitHub are now deployed directly to production!
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto justify-end">
+                <button
+                  onClick={() => {
+                    confetti({
+                      particleCount: 100,
+                      spread: 80,
+                      origin: { y: 0.5 },
+                    });
+                    showToast('🎉 CI/CD Pipeline Working Flawlessly!');
+                  }}
+                  className="px-3.5 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs font-semibold rounded-xl shadow-md shadow-amber-500/20 transition-all flex items-center gap-1.5 active:scale-95"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Celebrate Deployment 🎉</span>
+                </button>
+                <button
+                  onClick={() => setShowDeploymentBanner(false)}
+                  className="p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 rounded-lg hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 transition"
+                  title="Dismiss banner"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Quick Note Creator (Google Keep Style) - only in active note views */}
           {currentView !== 'archive' && currentView !== 'trash' && !selectedTag && (
             <QuickNoteCreator
