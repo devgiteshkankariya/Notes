@@ -13,11 +13,15 @@ import {
   Copy, 
   ExternalLink,
   Check,
-  Tag as TagIcon
+  Tag as TagIcon,
+  Volume2,
+  VolumeX,
+  Download
 } from 'lucide-react';
 import { Note, NoteThemeId } from '@/types/note';
 import { NOTE_THEMES } from '@/data/themes';
 import { renderMarkdown } from '@/utils/markdown';
+import { speakNote, stopSpeaking, downloadNoteAsMarkdown, getNoteStats } from '@/utils/noteHelpers';
 
 interface NoteCardProps {
   note: Note;
@@ -48,8 +52,34 @@ export const NoteCard: React.FC<NoteCardProps> = ({
 }) => {
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   const themeObj = NOTE_THEMES[note.theme] || NOTE_THEMES.default;
+  const stats = getNoteStats(note.content, note.checklist);
+
+  const handleToggleSpeech = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isSpeaking) {
+      stopSpeaking();
+      setIsSpeaking(false);
+    } else {
+      setIsSpeaking(true);
+      const started = speakNote(
+        note,
+        () => setIsSpeaking(true),
+        () => setIsSpeaking(false),
+        () => setIsSpeaking(false)
+      );
+      if (!started) {
+        setIsSpeaking(false);
+      }
+    }
+  };
+
+  const handleDownloadMarkdown = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    downloadNoteAsMarkdown(note);
+  };
 
   const handleCopy = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -196,15 +226,62 @@ export const NoteCard: React.FC<NoteCardProps> = ({
             : 'opacity-0 group-hover:opacity-100'
         }`}
       >
-        <span className="text-[10px] opacity-50 font-mono">
-          {new Date(note.updatedAt).toLocaleDateString(undefined, {
-            month: 'short',
-            day: 'numeric',
-          })}
-        </span>
+        <div className="flex items-center gap-1.5 text-[10px] opacity-60 font-mono">
+          <span>
+            {new Date(note.updatedAt).toLocaleDateString(undefined, {
+              month: 'short',
+              day: 'numeric',
+            })}
+          </span>
+          {stats.words > 0 && (
+            <>
+              <span>•</span>
+              <span>{stats.words}w</span>
+              <span>•</span>
+              <span>{stats.readingTimeMinutes}m read</span>
+            </>
+          )}
+          {isSpeaking && (
+            <span className="ml-1 inline-flex items-center gap-1 text-teal-600 dark:text-teal-400 font-sans font-semibold animate-pulse">
+              <Volume2 className="w-3 h-3" /> Playing
+            </span>
+          )}
+        </div>
 
         {/* Action Buttons */}
         <div className="flex items-center gap-0.5">
+          {/* Read Aloud (Text to Speech) */}
+          {!note.isTrashed && (note.title || note.content || (note.checklist && note.checklist.length > 0)) && (
+            <button
+              onClick={handleToggleSpeech}
+              className={`p-1 rounded-md transition-colors ${
+                isSpeaking
+                  ? 'text-teal-600 dark:text-teal-300 bg-teal-100/80 dark:bg-teal-950/80'
+                  : 'text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200'
+              }`}
+              title={isSpeaking ? 'Stop voice reading' : 'Read note aloud (Text-to-Speech)'}
+              aria-label={isSpeaking ? 'Stop voice reading' : 'Read note aloud'}
+            >
+              {isSpeaking ? (
+                <VolumeX className="w-3.5 h-3.5 animate-pulse" />
+              ) : (
+                <Volume2 className="w-3.5 h-3.5" />
+              )}
+            </button>
+          )}
+
+          {/* Export as Markdown File */}
+          {!note.isTrashed && (
+            <button
+              onClick={handleDownloadMarkdown}
+              className="p-1 rounded-md text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors"
+              title="Download note as Markdown (.md)"
+              aria-label="Download note as Markdown"
+            >
+              <Download className="w-3.5 h-3.5" />
+            </button>
+          )}
+
           {/* Favorite Toggle */}
           {!note.isTrashed && (
             <button

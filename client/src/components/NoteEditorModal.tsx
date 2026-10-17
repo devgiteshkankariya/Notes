@@ -15,11 +15,15 @@ import {
   Eye, 
   Edit3, 
   Check, 
-  Copy
+  Copy,
+  Volume2,
+  VolumeX,
+  Download
 } from 'lucide-react';
 import { Note, NoteThemeId, Tag, ChecklistItem } from '@/types/note';
 import { NOTE_THEMES, PRESET_COVERS, PRESET_ICONS } from '@/data/themes';
 import { renderMarkdown } from '@/utils/markdown';
+import { speakNote, stopSpeaking, downloadNoteAsMarkdown, getNoteStats } from '@/utils/noteHelpers';
 
 interface NoteEditorModalProps {
   note: Note | null;
@@ -58,6 +62,7 @@ export const NoteEditorModal: React.FC<NoteEditorModalProps> = ({
   const [showCoverPicker, setShowCoverPicker] = useState(false);
   const [newTagInput, setNewTagInput] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   useEffect(() => {
     if (note) {
@@ -71,12 +76,69 @@ export const NoteEditorModal: React.FC<NoteEditorModalProps> = ({
       setIsPinned(note.isPinned || false);
       setIsFavorite(note.isFavorite || false);
       setPreviewMode(false);
+      setIsSpeaking(false);
+      stopSpeaking();
     }
   }, [note]);
+
+  useEffect(() => {
+    return () => {
+      stopSpeaking();
+    };
+  }, []);
+
+  const stats = getNoteStats(content, checklist);
+
+  const handleToggleModalSpeech = () => {
+    if (isSpeaking) {
+      stopSpeaking();
+      setIsSpeaking(false);
+    } else if (note) {
+      const activeNote: Note = {
+        ...note,
+        title,
+        content,
+        theme,
+        icon,
+        coverImage,
+        tags,
+        checklist,
+        isPinned,
+        isFavorite,
+      };
+      setIsSpeaking(true);
+      const started = speakNote(
+        activeNote,
+        () => setIsSpeaking(true),
+        () => setIsSpeaking(false),
+        () => setIsSpeaking(false)
+      );
+      if (!started) setIsSpeaking(false);
+    }
+  };
+
+  const handleExportMarkdown = () => {
+    if (!note) return;
+    const activeNote: Note = {
+      ...note,
+      title,
+      content,
+      theme,
+      icon,
+      coverImage,
+      tags,
+      checklist,
+      isPinned,
+      isFavorite,
+    };
+    downloadNoteAsMarkdown(activeNote);
+  };
 
   if (!isOpen || !note) return null;
 
   const handleSaveAndClose = async () => {
+    stopSpeaking();
+    setIsSpeaking(false);
     try {
       setIsSaving(true);
       await onSave({
@@ -218,6 +280,36 @@ export const NoteEditorModal: React.FC<NoteEditorModalProps> = ({
             >
               {previewMode ? <Edit3 className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
               <span>{previewMode ? 'Edit Mode' : 'Markdown Preview'}</span>
+            </button>
+
+            {/* Read Aloud (Text to Speech) */}
+            <button
+              type="button"
+              onClick={handleToggleModalSpeech}
+              className={`flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors ${
+                isSpeaking
+                  ? 'bg-teal-600 text-white'
+                  : 'bg-black/5 dark:bg-white/10 text-zinc-700 dark:text-zinc-200 hover:bg-black/10'
+              }`}
+              title={isSpeaking ? 'Stop voice reading' : 'Read note aloud (Text-to-Speech)'}
+            >
+              {isSpeaking ? (
+                <VolumeX className="w-3.5 h-3.5 animate-pulse" />
+              ) : (
+                <Volume2 className="w-3.5 h-3.5" />
+              )}
+              <span className="hidden sm:inline">{isSpeaking ? 'Stop Audio' : 'Read Aloud'}</span>
+            </button>
+
+            {/* Export as Markdown File */}
+            <button
+              type="button"
+              onClick={handleExportMarkdown}
+              className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg bg-black/5 dark:bg-white/10 text-zinc-700 dark:text-zinc-200 hover:bg-black/10 transition-colors"
+              title="Download note as Markdown file (.md)"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Export .md</span>
             </button>
           </div>
 
@@ -437,7 +529,7 @@ export const NoteEditorModal: React.FC<NoteEditorModalProps> = ({
           {/* Metadata & Theme Palettes */}
           <div className="flex items-center gap-3">
             <span className="text-[11px] opacity-60 font-mono">
-              {wordCount} words · Edited{' '}
+              {stats.words} words · {stats.chars} chars · ~{stats.readingTimeMinutes}m read · Edited{' '}
               {new Date(note.updatedAt).toLocaleTimeString([], {
                 hour: '2-digit',
                 minute: '2-digit',
