@@ -1,27 +1,31 @@
 pipeline {
     agent any
 
+    environment {
+        SSH_TARGET = 'ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ubuntu@172.31.36.189'
+    }
+
     stages {
-        stage('Pull Latest Code from GitHub') {
+        stage('Pull Code on Notes Server') {
             steps {
                 sh '''
-                sudo -u ubuntu bash -c "cd /home/ubuntu/Notes && git pull origin main"
+                ${SSH_TARGET} "cd /home/ubuntu/Notes && git pull origin main"
                 '''
             }
         }
 
-        stage('Install & Build Backend') {
+        stage('Build Backend & Migrate DB') {
             steps {
                 sh '''
-                sudo -u ubuntu bash -c "cd /home/ubuntu/Notes/backend && npm install && npx prisma db push && npm run build"
+                ${SSH_TARGET} "cd /home/ubuntu/Notes/backend && npm install && npx prisma db push && npm run build"
                 '''
             }
         }
 
-        stage('Install & Build Frontend') {
+        stage('Build Frontend (Next.js)') {
             steps {
                 sh '''
-                sudo -u ubuntu bash -c "cd /home/ubuntu/Notes/client && npm install && npm run build"
+                ${SSH_TARGET} "cd /home/ubuntu/Notes/client && npm install && npm run build"
                 '''
             }
         }
@@ -29,9 +33,9 @@ pipeline {
         stage('Restart PM2 Services') {
             steps {
                 sh '''
-                sudo -u ubuntu bash -c "pm2 restart notes-backend || pm2 start /home/ubuntu/Notes/backend/dist/index.js --name 'notes-backend'"
-                sudo -u ubuntu bash -c "pm2 restart notes-frontend || pm2 start 'npm --prefix /home/ubuntu/Notes/client start' --name 'notes-frontend'"
-                sudo -u ubuntu bash -c "pm2 save"
+                ${SSH_TARGET} "pm2 restart notes-backend || pm2 start /home/ubuntu/Notes/backend/dist/index.js --name 'notes-backend'"
+                ${SSH_TARGET} "pm2 restart notes-frontend || pm2 start 'npm --prefix /home/ubuntu/Notes/client start' --name 'notes-frontend'"
+                ${SSH_TARGET} "pm2 save"
                 '''
             }
         }
@@ -39,10 +43,11 @@ pipeline {
 
     post {
         success {
-            echo '🎉 Deployment to EC2 Succeeded! Site is live at http://54.66.180.40'
+            echo '🎉 Remote Deployment to Notes-Server Succeeded!'
+            echo '🌐 Live Site: https://notes.devgitesh.xyz'
         }
         failure {
-            echo '❌ Deployment failed. Check the console output above.'
+            echo '❌ Remote deployment failed. Check the console output above.'
         }
     }
 }
