@@ -2,9 +2,14 @@ import type { Metadata, Viewport } from 'next';
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {
-  title: 'NoteKeep Studio | Notion & Google Keep Hybrid',
+  title: 'NoteKeep | Modern Notes Studio',
   description:
     'A modern, full-stack note-taking platform combining Google Keep’s vibrant themes and quick capture with Notion’s block structure and workspace power.',
+  icons: {
+    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
+  },
   keywords: [
     'Notes App',
     'Google Keep Alternative',

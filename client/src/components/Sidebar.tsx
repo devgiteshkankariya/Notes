@@ -94,8 +94,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* App Brand Header */}
         <div className="h-16 px-5 flex items-center justify-between border-b border-zinc-200/80 dark:border-zinc-800/80">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-400 text-white flex items-center justify-center shadow-md shadow-amber-500/20">
-              <Sparkles className="w-4 h-4 fill-white/20" />
+            <div className="w-8 h-8 rounded-xl overflow-hidden shadow-md shadow-amber-500/20 flex items-center justify-center">
+              <img src="/icon.svg" alt="NoteKeep Logo" className="w-full h-full object-cover" />
             </div>
             <div>
               <span className="font-bold text-sm tracking-tight text-zinc-900 dark:text-white flex items-center gap-1.5">
